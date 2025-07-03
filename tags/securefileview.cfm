@@ -63,7 +63,9 @@
 									<a href="#application.s3.url#pvt/#request.user.Tenant.Id#/memo/#qFiles.Key#/#fl#" target="_blank">#fl#</a>
 								</cfcase>
 								<cfdefaultcase>
-									<a href="#application.s3.url#pvt/#request.user.Tenant.Id#/employee/#qFiles.Key#/#fl#" target="_blank">#fl#</a>
+									<cfset newURL = s3generatepresignedurl("#application.s3.bucket#/pvt/#request.user.tenant.Id#/employee/#qFiles.Key#/#fl#")/>
+									<!--- <a href="#application.s3.url#pvt/#request.user.Tenant.Id#/employee/#qFiles.Key#/#fl#" target="_blank">#fl#</a> --->
+									<a href="#newURL#" target="_blank">#fl#</a>
 								</cfdefaultcase>
 							</cfswitch>
 						</li>

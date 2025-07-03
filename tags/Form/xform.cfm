@@ -201,8 +201,10 @@
 									<cfset curl = replace(curl,'~','_')/>
 
 									if (data != undefined) {
-										<!----:TODO fix bug herer ---->
-										#rdi# = #rdi#.replace('@key','~'+data['KEY']);
+										// #rdi# = #rdi#.replace('@key','~'+data['KEY']);
+										if (typeof #rdi# === 'string' && #rdi# !== '' && data !== undefined) {
+											#rdi# = #rdi#.replace('@key', '~' + data['KEY']);
+										}
 									}
 									if(#rdi_target#!="") 	{
 										

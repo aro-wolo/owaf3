@@ -135,7 +135,7 @@
 								</div>
 							</cfif>
 							<cfif !Attributes.closed>
-								<div class="small text-muted text-center " style="color:purple !important;">Click [Post] to save your comment</div>
+								<div class="small text-muted text-center ">Click [Post] to save your comment</div>
 							</cfif>
 						</form>
 					</div>

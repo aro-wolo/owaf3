@@ -126,7 +126,7 @@
 
 				<cfelse>
 
-					<label class="<cfif !attributes.inline>#Attributes.type# d-block<cfelse>#Attributes.type# d-inlin mr-2 mt-1</cfif>">
+					<label class="<cfif !attributes.inline>#Attributes.type# d-block<cfelse>#Attributes.type# d-inline mr-2 mt-1</cfif>">
 
 						<input type="#Attributes.type#" name="#Attributes.name#" value="#x#" class="icheck #Attributes.class# #Attributes.id#"
 						<cfif Attributes.readOnly> disabled </cfif>
