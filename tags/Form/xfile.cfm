@@ -17,13 +17,18 @@
     <!---cfparam name="Attributes.showPreview" type="boolean" default="true"/--->
     <cfparam name="Attributes.multiple" type="boolean" default="true"/>
     <cfparam name="Attributes.id" type="string" default="#application.fn.GetRandomVariable()#"/>
+    <cfparam name="Attributes.size" type="numeric" default="4"/>
 
 	<cfset ArrayAppend(request.form.file, Attributes)/>
 
 	<cfset cf_xform = getBaseTagData("cf_xform").Attributes/>
 
 <cfelse>
-
+	<style>
+		###Attributes.id# .dz-message{
+			padding: #Attributes.size#rem 1rem !important;
+		}
+	</style>
 	<div class="pad-top-10">
 
 		<div class="dropzone #Attributes.class#" id="#Attributes.id#">
@@ -32,6 +37,7 @@
 
 		<input type="hidden" id="#Attributes.id#q" <cfif Attributes.required>required</cfif> value="" name="#Attributes.name#" >
 		<input type="hidden" value="#Attributes.tag#" name="#Attributes.name#_tag" >
+		<input type="hidden" value="#Attributes.existingFiles.recordcount#" name="#Attributes.name#_hasFilesBefore" >
 
 	</div>
 <!---- script --->
@@ -48,7 +54,6 @@
 			dictDefaultMessage: "#Attributes.label#"
 		});
 		#_dropzone#.on("success", function(a,b) {
-			//console.log(b);
 			var fn = JSON.parse(b).file_name;
 			var _hd = $('###Attributes.id#q')[0];
 			_hd.value = _hd.value + "|" + fn;
@@ -83,21 +88,27 @@
  			}
 		});
 
-	    <!--- create mockfile ---->
-	    <cfif Attributes.existingFiles.recordcount>
-	    	var mockFile ='';
-	    	<cfloop query="Attributes.existingFiles">
-				// Create the mock file:
-				var mockFile = {path: "#Attributes.existingFiles.file#", name: "#listlast(Attributes.existingFiles.file,'/')#", size: #val(Attributes.existingFiles.size)# };
-				#_dropzone#.emit("addedfile", mockFile);
-				<cfif isImageExtension(Attributes.existingFiles.file)>
-					#_dropzone#.emit("thumbnail", mockFile, "#Attributes.existingFilePath#/#Attributes.existingFiles.file#");
-				</cfif>
-				#_dropzone#.emit("complete", mockFile);
-			</cfloop>
-	    </cfif>
+			<!--- create mockfile ---->
+			<cfif Attributes.existingFiles.recordcount>
+				var mockFile ='';
+				<cfloop query="Attributes.existingFiles">
+					<cfset i = 0/>
+					<cfloop list="#Attributes.existingFiles.file#" delimiters="|" item="_f">
+						<cfset i++/>
+						// Create the mock file:
+						<cfset file_path = listGetAt(Attributes.existingFiles.file,i,'|')/>
+						<cfset file_name = listlast(file_path,'/')/>
+						<cfset file_size = listGetAt(Attributes.existingFiles.size,i,'|')/>
 
-
+						var mockFile = {path: "#file_path#", name: "#file_name#", size: #val(file_size)# };
+						#_dropzone#.emit("addedfile", mockFile);
+						<cfif isImageExtension(file_path)>
+							#_dropzone#.emit("thumbnail", mockFile, "#Attributes.existingFilePath#/#file_path#");
+						</cfif>
+						#_dropzone#.emit("complete", mockFile);
+					</cfloop>
+				</cfloop>
+			</cfif>
 
     });
 </script>
