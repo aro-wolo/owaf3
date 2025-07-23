@@ -20,6 +20,8 @@
 		<cfparam name="Attributes.colors" type="string" default=""/><!--- list of colors --->
 		<cfparam name="Attributes.theme" type="string" default="infographic"/><!---default"/--->
 
+		<cfparam name="Attributes.jsId" type="string" default="#application.fn.getRandomVariable()#"/><!---default"/--->
+
 
 		<cfparam name="Attributes.type" type="string" default="mix"/>	<!--- the type of chart to render --->
 
@@ -27,19 +29,18 @@
 
 		<div id="#Attributes.id#" class="#Attributes.class#" <cfif Attributes.align != ""> align="#Attributes.align#" </cfif> style="width:#Attributes.width#; height:#Attributes.height#"></div>
 
-		<cfset echartid = application.fn.getRandomVariable()/>
 		<cfset opt_var = application.fn.getRandomVariable()/>
 
 		<cfparam name="request.tag.echart.to_resize" default=""/>
 
-		<cfset request.tag.echart.to_resize = ListAppend(request.tag.echart.to_resize, "#echartid#.resize()", ";")/>
+		<cfset request.tag.echart.to_resize = ListAppend(request.tag.echart.to_resize, "#Attributes.jsId#.resize()", ";")/>
 		<cfif request.tag.echart.to_resize == "">
-			<cfset request.tag.echart.to_resize = "#echartid#.resize();"/>
+			<cfset request.tag.echart.to_resize = "#Attributes.jsId#.resize();"/>
 		</cfif>
 
 		<script type="text/javascript">
 
-			var #echartid# = echarts.init(document.getElementById('#Attributes.id#'),'#attributes.theme#');
+			var #Attributes.jsId# = echarts.init(document.getElementById('#Attributes.id#'),'#attributes.theme#');
 
 	<cfelse>
 
@@ -111,7 +112,7 @@
 
 			}
 
-			#echartid#.setOption(#opt_var#);
+			#Attributes.jsId#.setOption(#opt_var#);
 			window.onresize = function() {
 				#request.tag.echart.to_resize#;
 			};
@@ -120,7 +121,7 @@
 			});
 
 			<cfif attributes.OnClick != "">
-				#echartid#.on('click', function(e) 	{
+				#Attributes.jsId#.on('click', function(e) 	{
 					#attributes.OnClick#;
 				});
 			</cfif>
