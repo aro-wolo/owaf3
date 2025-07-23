@@ -13,7 +13,7 @@
 		<cfparam name="Attributes.labelPosition" type="string" default=""/>
 		<cfparam name="Attributes.showlabel" type="boolean" default="true"/>
 		<cfparam name="Attributes.showlabelLine" type="boolean" default="true"/>
-		<cfparam name="Attributes.labelformat" type="string" default=""/>
+		<cfparam name="Attributes.labelFormat" type="string" default=""/>
 		<cfparam name="Attributes.left" type="string" default=""/>
 		<cfparam name="Attributes.top" type="string" default=""/>
 

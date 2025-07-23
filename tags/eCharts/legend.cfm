@@ -10,7 +10,8 @@
 		<cfparam name="Attributes.bottom" type="string" default=""/>
 		<cfparam name="Attributes.position" type="string" default=""/>
 		<cfparam name="Attributes.color" type="string" default=""/>
-		<cfparam name="Attributes.textcolor" type="string" default=""/>
+		<cfparam name="Attributes.showValue" type="boolean" default="false"/>
+		<cfparam name="Attributes.textColor" type="string" default=""/>
 		<cfparam name="Attributes.icon" type="any" default=""/>
 		<cfparam name="Attributes.type" type="string" default="plain"/> <!--- plain/scroll --->
 
@@ -29,17 +30,24 @@
 			],
 		</cfif>
 		legend: {
-
-<!--- 			<cfif Attributes.icon != "">
-				icon : '#Attributes.icon#',
-			</cfif> --->
+			<cfif Attributes.showValue>
+				formatter: (name) => {
+					var chart = #cf_echart.jsId#;
+					var series = chart.getOption().series[0];
+					var current = series.data.find(row => row.name === name);
+					var value = current?.value || 0;
+					var total = series.data.reduce((sum, row) => sum + row.value, 0);
+					var percent = total > 0 ? ((value / total) * 100).toFixed(2) : '0.00';
+					return `${name} : ${value} (${percent}%)`;
+				},
+			</cfif>
 			type : '#Attributes.type#',
 			textStyle: {
 				<cfif cf_echart.font != "">
 					fontFamily : '#cf_echart.font#',
 				</cfif>
-				<cfif Attributes.textcolor != "">
-					color: "#Attributes.textcolor#"
+				<cfif Attributes.textColor != "">
+					color: "#Attributes.textColor#"
 				</cfif>
 			},
 		

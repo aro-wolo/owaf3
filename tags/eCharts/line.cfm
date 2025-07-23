@@ -7,6 +7,7 @@
 		<cfparam name="Attributes.datasource" type="any"/>
 		<cfparam name="Attributes.yAxis" type="string" default=""/>
 		<cfparam name="Attributes.hideSymbol" type="boolean" default="false"/>
+		<cfparam name="Attributes.lineColor" type="string" default=""/>
 
 		<!--- line --->
 		<cfparam name="Attributes.smooth" type="boolean" default="false"/>
@@ -42,8 +43,10 @@
 				<cfelse>
 					'#replace(Attributes.datasource,",","','","all")#'
 				</cfif>
-
-			]
+			],
+			<cfif attributes.lineColor neq "">
+				'lineStyle' : {color: '#attributes.lineColor#'}
+			</cfif>
 		},
 
 	</cfif>
